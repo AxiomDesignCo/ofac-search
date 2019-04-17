@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="U.S. Treasury’s Office of Foreign Asset Control’s (OFAC) Sanctions Program Listings.">
+
+	<meta name="author" content="Daniel Doherty">
+
+	<title>OFAC Search Tool</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<form action="OFACSearch.html" name="formData" id="formData" method="GET" style="margin-left: 5px; margin-top: 3px;">
+
+		<label for="name">Name</label>
+		<textarea name="name" id="name" placeholder="Type or paste a list of names or phrases, one per line." required="true" rows="10" cols="50"></textarea>
+		<br><br>
+
+		<label for="minScore">Minimum Score</label>
+		<input type="text" name="minScore" id="minScore" placeholder="85">
+
+		<br><br>
+		<input type="submit" name="submit" value="Submit">
+	</form>
+
+	<script type="text/javascript">
+		
+		$("document").ready(function() {
+			var formData = $("#formData").serialize();
+			$.ajax({
+				//		url: 'http://search.ofac-api.com/api/v1?name=John Smith&minScore=80',
+				url: 'http://search.ofac-api.com/api/v1'
+				headers: {
+				"apiKey": 'e9426c31-8766-4610-86b5-2e258e10c6f9'
+				},
+				type: "GET",
+				data: formData,
+				dataType: "json",
+				success: function(data) {
+					$.each(data, function() {
+						$.each(this, function(key, value) {
+							$("#entry").append(
+								"Name: " + value.name + "<br>" +
+								"Score: " + value.minScore + "<br>"
+							);
+						});
+					});
+				};
+			});
+		});
+
+	</script>
+
+
+	<div id="entry"></div>
+
+</body>
+
+</html>
